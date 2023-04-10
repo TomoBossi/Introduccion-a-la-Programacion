@@ -272,10 +272,6 @@ bisiesto :: Integer -> Bool
 bisiesto a = esMultiploDe a 4 && (not (esMultiploDe a 100) || esMultiploDe a 400)
 
 -- 7.
-abs :: Float -> Float
-abs r | r >= 0 = r
-      | otherwise = -r
-
 distanciaManhattan:: (Float, Float, Float) -> (Float, Float, Float) -> Float
 distanciaManhattan (a0, a1, a2) (b0, b1, b2) = abs (a0 - b0) + abs (a1 - b1) + abs (a2 - b2)
 
