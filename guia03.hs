@@ -1,3 +1,5 @@
+-- Todos los conectores lógicos usados en especificación pueden asumirse con semántica de cortocircuito, i.e. ^ equivale a ^L aunque no est
+
 -- 1.a.
 f :: Integer -> Integer
 f 1 = 8
