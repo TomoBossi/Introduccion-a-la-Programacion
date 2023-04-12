@@ -1,4 +1,4 @@
--- Todos los conectores lógicos usados en especificación pueden asumirse con semántica de cortocircuito, i.e. ^ equivale a ^L aunque no est
+-- Todos los conectores lógicos usados en especificación pueden asumirse con semántica de cortocircuito, i.e. ^ equivale a ^L aunque no esté expl
 
 -- 1.a.
 f :: Integer -> Integer
