@@ -6,13 +6,18 @@ fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 
 -- 2.
 -- Es posible que la especificación esté mal, tendría más sentido que la resolución sea sólo parteEnteraAux sin el parche de su wrapper.
+beta :: Bool -> Integer
+beta True = 1
+beta False = 0
+
 parteEntera :: Float -> Integer
-parteEntera x | x < 0 && x > -1 = -1 + parteEnteraAux x
-              | otherwise = parteEnteraAux x
-    where parteEnteraAux :: Float -> Integer
-          parteEnteraAux x | x <= -1 = -1 + parteEntera (x+1)
-                           | x >=  1 =  1 + parteEntera (x-1)
-                           | otherwise = 0
+parteEntera x = -beta (x < 0 && x > -1) + parteEnteraAux x
+  where 
+    parteEnteraAux :: Float -> Integer
+    parteEnteraAux x 
+      | x <= -1 = -1 + parteEntera (x+1)
+      | x >=  1 =  1 + parteEntera (x-1)
+      | otherwise = 0
 
 -- 3.
 esDivisible :: Integer -> Integer -> Bool
@@ -39,8 +44,10 @@ sumaDigitos n = mod n 10 + sumaDigitos (div n 10)
 
 -- 7.
 todosDigitosIguales :: Integer -> Bool
-todosDigitosIguales n | n < 10 = True
-                      | otherwise = mod n 10 == mod (div n 10) 10 && todosDigitosIguales (div n 10)
+todosDigitosIguales n 
+  | n < 10 = True
+  | otherwise = decenaIgualUnidad && todosDigitosIguales (div n 10)
+  where decenaIgualUnidad = mod n 10 == mod (div n 10) 10
 
 -- 8.
 -- El dígito i=1 es el de las unidades.
@@ -49,16 +56,17 @@ iesimoDigito n 1 = mod n 10
 iesimoDigito n i = iesimoDigito (div n 10) (i-1)
 
 cantDigitos :: Integer -> Integer
-cantDigitos n | n < 10 = 1
-              | otherwise = 1 + cantDigitos (div n 10)
+cantDigitos 0 = 0
+cantDigitos n = 1 + cantDigitos (div n 10)
 
 -- 9.
 esCapicua :: Integer -> Bool
-esCapicua n | n < 10 = True
-            | otherwise = digitoUnidades == digitoIzquierda && esCapicua nSinBordes
-    where digitoUnidades = mod n 10
-          digitoIzquierda = div n (10^(cantDigitos n - 1))
-          nSinBordes = div (n - 10^(cantDigitos n - 1) * digitoIzquierda) 10
+esCapicua 0 = True
+esCapicua n = digitoUnidades == digitoIzquierda && esCapicua nSinBordes
+  where 
+    digitoUnidades = mod n 10
+    digitoIzquierda = div n (10^(cantDigitos n - 1))
+    nSinBordes = div (n - 10^(cantDigitos n - 1) * digitoIzquierda) 10
 
 -- 10.a.
 -- Integer.
@@ -84,9 +92,11 @@ f3 n q = q^(2*n) + q^(2*n - 1) + f3 (n-1) q
 f4 :: Integer -> Float -> Float
 f4 0 _ = 0
 f4 n q = f4Hasta2n n n q
-    where f4Hasta2n :: Integer -> Integer -> Float -> Float
-          f4Hasta2n n m q | m == 2*n = q^m
-                          | otherwise = q^m + f4Hasta2n n (m+1) q
+  where 
+    f4Hasta2n :: Integer -> Integer -> Float -> Float
+    f4Hasta2n n m q 
+      | m == 2*n = q^m
+      | otherwise = q^m + f4Hasta2n n (m+1) q
 
 -- 11.
 fac :: Integer -> Integer
@@ -96,49 +106,56 @@ fac n = n * fac (n-1)
 eAprox :: Integer -> Float
 eAprox 0 = 1
 eAprox n = 1.0/(fromIntegral (fac n)) + eAprox (n-1)
+
 e :: Float
 e = eAprox 10
 
 -- 12.
 raizDe2Aprox :: Integer -> Float
 raizDe2Aprox n = sucesion n - 1
-    where sucesion :: Integer -> Float
-          sucesion 1 = 2.0
-          sucesion n = 2.0 + 1.0/(sucesion (n-1))
+  where 
+    sucesion :: Integer -> Float
+    sucesion 1 = 2.0
+    sucesion n = 2.0 + 1.0/(sucesion (n-1))
 
 -- 13.
 f :: Integer -> Integer -> Integer
 f 1 m = m -- se rompe con sumaInterna 1 m
 f n m = sumaInterna n m + f (n-1) m
-    where sumaInterna :: Integer -> Integer -> Integer
-          sumaInterna n 1 = n
-          sumaInterna n m = n^m + sumaInterna n (m-1)
+  where
+    sumaInterna :: Integer -> Integer -> Integer
+    sumaInterna n 1 = n
+    sumaInterna n m = n^m + sumaInterna n (m-1)
 
 -- 14.
 sumaPotencias :: Integer -> Integer -> Integer -> Integer
 sumaPotencias q 1 1 = q^2
 sumaPotencias q 1 m = q^(1+m) + sumaPotencias q 1 (m-1)
 sumaPotencias q n m = sumaInterna q n m + sumaPotencias q (n-1) m
-    where sumaInterna :: Integer -> Integer -> Integer -> Integer
-          sumaInterna q n 1 = q^(n+1)
-          sumaInterna q n m = q^(n+m) + sumaInterna q n (m-1)
+  where 
+    sumaInterna :: Integer -> Integer -> Integer -> Integer
+    sumaInterna q n 1 = q^(n+1)
+    sumaInterna q n m = q^(n+m) + sumaInterna q n (m-1)
 
 -- 15.
 sumaRacionales :: Integer -> Integer -> Float
 sumaRacionales 1 1 = 1.0
 sumaRacionales 1 m = 1.0/(fromIntegral m) + sumaRacionales 1 (m-1)
 sumaRacionales n m = sumaInterna n m + sumaRacionales (n-1) m
-    where sumaInterna :: Integer -> Integer -> Float
-          sumaInterna n 1 = fromIntegral n
-          sumaInterna n m = (fromIntegral n)/(fromIntegral m) + sumaInterna n (m-1)
+  where 
+    sumaInterna :: Integer -> Integer -> Float
+    sumaInterna n 1 = fromIntegral n
+    sumaInterna n m = (fromIntegral n)/(fromIntegral m) + sumaInterna n (m-1)
 
 -- 16.a.
 menorDivisor :: Integer -> Integer
 menorDivisor n = menorDivisorDesde 2 n
-    where menorDivisorDesde :: Integer -> Integer -> Integer
-          menorDivisorDesde m n | m > n = n
-                                | mod n m == 0 = m
-                                | otherwise = menorDivisorDesde (m+1) n
+  where 
+    menorDivisorDesde :: Integer -> Integer -> Integer
+    menorDivisorDesde m n 
+      | m > n = n
+      | mod n m == 0 = m
+      | otherwise = menorDivisorDesde (m+1) n
 
 -- 16.b.
 esPrimo :: Integer -> Bool
@@ -146,76 +163,88 @@ esPrimo n = n > 1 && n == menorDivisor n
 
 -- 16.c.
 sonCoprimos :: Integer -> Integer -> Bool
-sonCoprimos n1 n2 | n1 > n2 = mod n2 d1 /= 0 && sonCoprimos (div n1 d1) n2
-                  | n1 < n2 = mod n1 d2 /= 0 && sonCoprimos n1 (div n2 d2)
-                  | otherwise = n1 == 1 || n2 == 1
-    where d1 = menorDivisor n1
-          d2 = menorDivisor n2
+sonCoprimos n1 n2 
+  | n1 > n2 = mod n2 d1 /= 0 && sonCoprimos (div n1 d1) n2
+  | n1 < n2 = mod n1 d2 /= 0 && sonCoprimos n1 (div n2 d2)
+  | otherwise = n1 == 1 || n2 == 1
+  where
+    d1 = menorDivisor n1
+    d2 = menorDivisor n2
 
 -- 16.d.
 -- El primo n = 1 es el primer primo
 nEsimoPrimo :: Integer -> Integer
 nEsimoPrimo n = nEsimoPrimoDesde 1 n
-    where nEsimoPrimoDesde :: Integer -> Integer -> Integer
-          nEsimoPrimoDesde m 0 = m - 1
-          nEsimoPrimoDesde m n | esPrimo m = nEsimoPrimoDesde (m+1) (n-1)
-                               | otherwise = nEsimoPrimoDesde (m+1) n
+  where 
+    nEsimoPrimoDesde :: Integer -> Integer -> Integer
+    nEsimoPrimoDesde m 0 = m - 1
+    nEsimoPrimoDesde m n 
+      | esPrimo m = nEsimoPrimoDesde (m+1) (n-1)
+      | otherwise = nEsimoPrimoDesde (m+1) n
 
 -- 17.
 esFibonacci :: Integer -> Bool
 esFibonacci n = esFibonacciAux n 0 1
-    where esFibonacciAux :: Integer -> Integer -> Integer -> Bool
-          esFibonacciAux n f2 f1 | f1 > n = False
-                                 | f1 == n = True
-                                 | otherwise = esFibonacciAux n f1 (f2 + f1)
+  where 
+    esFibonacciAux :: Integer -> Integer -> Integer -> Bool
+    esFibonacciAux n f2 f1 
+      | f1 > n = False
+      | f1 == n = True
+      | otherwise = esFibonacciAux n f1 (f2 + f1)
 
 -- 18.
 mayorDigitoPar :: Integer -> Integer
 mayorDigitoPar n = mayorDigitoParAux n (-1)
-    where mayorDigitoParAux :: Integer -> Integer -> Integer
-          mayorDigitoParAux 0 d = d
-          mayorDigitoParAux n d | unidadPar && d < unidad = mayorDigitoParAux (div n 10) unidad
-                                | otherwise = mayorDigitoParAux (div n 10) d
-                                  where unidad = mod n 10
-                                        unidadPar = mod unidad 2 == 0
+  where 
+    mayorDigitoParAux :: Integer -> Integer -> Integer
+    mayorDigitoParAux 0 d = d
+    mayorDigitoParAux n d 
+      | unidadPar && d < unidad = mayorDigitoParAux (div n 10) unidad
+      | otherwise = mayorDigitoParAux (div n 10) d
+      where 
+        unidad = mod n 10
+        unidadPar = mod unidad 2 == 0
 
 -- 19.
 esSumaInicialDePrimos :: Integer -> Bool
 esSumaInicialDePrimos n = esSumaInicialDePrimosDesde n 2
-    where esSumaInicialDePrimosDesde :: Integer -> Integer -> Bool
-          esSumaInicialDePrimosDesde n p | n == 0 = True
-                                         | n < 0 = False
-                                         | esPrimo p = esSumaInicialDePrimosDesde (n-p) (p+1)
-                                         | otherwise = esSumaInicialDePrimosDesde n (p+1)
+  where 
+    esSumaInicialDePrimosDesde :: Integer -> Integer -> Bool
+    esSumaInicialDePrimosDesde n p 
+      | n == 0 = True
+      | n < 0 = False
+      | esPrimo p = esSumaInicialDePrimosDesde (n-p) (p+1)
+      | otherwise = esSumaInicialDePrimosDesde n (p+1)
 
 -- 20.
 sumaDivisores :: Integer -> Integer
 sumaDivisores n = sumaDivisoresDesde n n
-    where sumaDivisoresDesde :: Integer -> Integer -> Integer
-          sumaDivisoresDesde n 1 = 1
-          sumaDivisoresDesde n d | esDivisible n d = d + sumaDivisoresDesde n (d-1)
-                                 | otherwise = sumaDivisoresDesde n (d-1)
+  where 
+    sumaDivisoresDesde :: Integer -> Integer -> Integer
+    sumaDivisoresDesde n 1 = 1
+    sumaDivisoresDesde n d 
+      | esDivisible n d = d + sumaDivisoresDesde n (d-1)
+      | otherwise = sumaDivisoresDesde n (d-1)
 
 tomaValorMax :: Integer -> Integer -> Integer
 tomaValorMax n1 n2 = tomaValorMaxAux n1 n2 n1
-    where tomaValorMaxAux :: Integer -> Integer -> Integer -> Integer
-          tomaValorMaxAux n1 n2 m | n1 > n2 = m
-                                  | sumaDiv > sumaDivisores m = tomaValorMaxAux (n1+1) n2 n1
-                                  | otherwise = tomaValorMaxAux (n1+1) n2 m
-                                    where sumaDiv = sumaDivisores n1
+  where 
+    tomaValorMaxAux :: Integer -> Integer -> Integer -> Integer
+    tomaValorMaxAux n1 n2 m 
+      | n1 > n2 = m
+      | sumaDiv > sumaDivisores m = tomaValorMaxAux (n1+1) n2 n1
+      | otherwise = tomaValorMaxAux (n1+1) n2 m
+      where sumaDiv = sumaDivisores n1
 
 -- 21.
-beta :: Bool -> Integer
-beta True = 1
-beta False = 0
-
 pitagoras :: Integer -> Integer -> Integer -> Integer
 pitagoras 0 0 r = 1
 pitagoras 0 m r = beta (m^2 <= r^2) + pitagoras 0 (m-1) r
 pitagoras n m r = pitagoras (n-1) m r + iterInterna n m r
-    where iterInterna :: Integer -> Integer -> Integer -> Integer
-          iterInterna n 0 r = beta (n^2 <= r^2)
-          iterInterna n m r = beta (n^2 + m^2 <= r^2) + iterInterna n (m-1) r
+  where 
+    iterInterna :: Integer -> Integer -> Integer -> Integer
+    iterInterna n 0 r = beta (n^2 <= r^2)
+    iterInterna n m r = beta (n^2 + m^2 <= r^2) + iterInterna n (m-1) r
 
 main :: IO ()
 main = do
