@@ -248,27 +248,27 @@ pitagoras n m r = pitagoras (n-1) m r + iterInterna n m r
 
 main :: IO ()
 main = do
-    print ("1.", fibonacci 6) -- fib(0) = 0, 1, 1, 2, 3, 5, 8 = fib(6)
-    print ("2.", parteEntera 5.25, parteEntera (-1.2), parteEntera (-2), parteEntera (-0.5), parteEntera (0.5))
-    print ("3.", esDivisible 5 2, esDivisible 15 3)
-    print ("4.", sumaImpares 3)
-    print ("5.", medioFact 10, medioFact 9, medioFact 0)
-    print ("6.", sumaDigitos 243010)
-    print ("7.", todosDigitosIguales 234, todosDigitosIguales 444, todosDigitosIguales 5)
-    print ("8.", iesimoDigito 134 1, iesimoDigito 134 2, iesimoDigito 134 3)
-    print ("9.", esCapicua 12344321, esCapicua 12344521, esCapicua 11)
-    print ("10.b.", f2 3 2.0) -- 8 + 4 + 2 = 14
-    print ("10.c.", f3 2 2.0) -- 16 + 8 + 4 + 2 = 30
-    print ("10.d.", f4 2 2.0) -- 16 + 8 + 4 = 28
-    print ("11.", e)
-    print ("12.", raizDe2Aprox 1, raizDe2Aprox 2, raizDe2Aprox 3)
-    print ("13.", f 3 3) -- 27 + 9 + 3 + 8 + 4 + 2 + 1 + 1 + 1 = 56
-    print ("14.", sumaPotencias 2 2 2) -- 2^(2+2) + 2^(2+1) + 2^(1+2) + 2^(1+1) = 16 + 2*8 + 4 = 36
-    print ("15.", sumaRacionales 2 2) -- 2/2 + 2/1 + 1/2 + 1/1 = 1 + 2 + 0.5 + 1 = 4.5
-    print ("16.c.", sonCoprimos 8 9, sonCoprimos 10 15, sonCoprimos 2 1)
-    print ("16.d.", nEsimoPrimo 3)
-    print ("17.", esFibonacci 55, esFibonacci 54, esFibonacci 34)
-    print ("18.", mayorDigitoPar 358962650742, mayorDigitoPar 1357)
-    print ("19.", esSumaInicialDePrimos (2+3+5+7), esSumaInicialDePrimos (2+3+5+7 + 13))
-    print ("20.", tomaValorMax 10 15)
-    print ("21.", pitagoras 3 4 5, pitagoras 3 4 2)
+  print ("1.", fibonacci 6) -- fib(0) = 0, 1, 1, 2, 3, 5, 8 = fib(6)
+  print ("2.", parteEntera 5.25, parteEntera (-1.2), parteEntera (-2), parteEntera (-0.5), parteEntera (0.5))
+  print ("3.", esDivisible 5 2, esDivisible 15 3)
+  print ("4.", sumaImpares 3)
+  print ("5.", medioFact 10, medioFact 9, medioFact 0)
+  print ("6.", sumaDigitos 243010)
+  print ("7.", todosDigitosIguales 234, todosDigitosIguales 444, todosDigitosIguales 5)
+  print ("8.", iesimoDigito 134 1, iesimoDigito 134 2, iesimoDigito 134 3)
+  print ("9.", esCapicua 12344321, esCapicua 12344521, esCapicua 11)
+  print ("10.b.", f2 3 2.0) -- 8 + 4 + 2 = 14
+  print ("10.c.", f3 2 2.0) -- 16 + 8 + 4 + 2 = 30
+  print ("10.d.", f4 2 2.0) -- 16 + 8 + 4 = 28
+  print ("11.", e)
+  print ("12.", raizDe2Aprox 1, raizDe2Aprox 2, raizDe2Aprox 3)
+  print ("13.", f 3 3) -- 27 + 9 + 3 + 8 + 4 + 2 + 1 + 1 + 1 = 56
+  print ("14.", sumaPotencias 2 2 2) -- 2^(2+2) + 2^(2+1) + 2^(1+2) + 2^(1+1) = 16 + 2*8 + 4 = 36
+  print ("15.", sumaRacionales 2 2) -- 2/2 + 2/1 + 1/2 + 1/1 = 1 + 2 + 0.5 + 1 = 4.5
+  print ("16.c.", sonCoprimos 8 9, sonCoprimos 10 15, sonCoprimos 2 1)
+  print ("16.d.", nEsimoPrimo 3)
+  print ("17.", esFibonacci 55, esFibonacci 54, esFibonacci 34)
+  print ("18.", mayorDigitoPar 358962650742, mayorDigitoPar 1357)
+  print ("19.", esSumaInicialDePrimos (2+3+5+7), esSumaInicialDePrimos (2+3+5+7 + 13))
+  print ("20.", tomaValorMax 10 15)
+  print ("21.", pitagoras 3 4 5, pitagoras 3 4 2)
