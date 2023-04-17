@@ -36,8 +36,9 @@ problema signo(r:R):Z {
 }
 -}
 absoluto :: Integer -> Integer
-absoluto k | k >= 0 = k
-           | otherwise = -k
+absoluto k 
+  | k >= 0 = k
+  | otherwise = -k
 
 -- 2.b.
 {-
@@ -48,8 +49,9 @@ problema maximoabsoluto(k1:Z, k2:Z):Z {
 }
 -}
 maximoabsoluto :: Integer -> Integer -> Integer
-maximoabsoluto k1 k2 | absoluto(k1) >= absoluto(k2) = absoluto(k1)
-                     | otherwise = absoluto(k2)
+maximoabsoluto k1 k2 
+  | absoluto(k1) >= absoluto(k2) = absoluto(k1)
+  | otherwise = absoluto(k2)
 
 -- 2.c.
 {-
@@ -60,9 +62,10 @@ problema maximo3(k1:Z, k2:Z, k3:Z):Z {
 }
 -}
 maximo3 :: Integer -> Integer -> Integer -> Integer
-maximo3 k1 k2 k3 | k1 >= k2 && k1 >= k3 = k1
-                 | k2 >= k1 && k2 >= k3 = k2
-                 | otherwise = k3
+maximo3 k1 k2 k3 
+  | k1 >= k2 && k1 >= k3 = k1
+  | k2 >= k1 && k2 >= k3 = k2
+  | otherwise = k3
 
 -- 2.d.
 {-
@@ -112,10 +115,11 @@ pred mayoresQue7(r1:R, r2:R) {
 }
 -}
 mismoIntervalo :: Float -> Float -> Bool
-mismoIntervalo r1 r2 | r1 <= 3 && r2 <= 3 = True
-                     | r1 > 3 && r1 <= 7 && r2 > 3 && r2 <= 7 = True
-                     | r1 > 7 && r2 > 7 = True
-                     | otherwise = False
+mismoIntervalo r1 r2 
+  | r1 <= 3 && r2 <= 3 = True
+  | r1 > 3 && r1 <= 7 && r2 > 3 && r2 <= 7 = True
+  | r1 > 7 && r2 > 7 = True
+  | otherwise = False
 
 -- 2.g.
 {-
@@ -221,8 +225,9 @@ problema sumarSoloMultiplos(t:ZxZxZ, n:N):Z {
 -}
 sumarSoloMultiplos :: (Integer, Integer, Integer) -> Integer -> Integer
 sumarSoloMultiplos (t0, t1, t2) n = t0*betaMul t0 n + t1*betaMul t1 n + t2*betaMul t2 n
-                                    where betaMul :: Integer -> Integer -> Integer
-                                          betaMul k n = beta (esMultiploDe k n)
+  where 
+    betaMul :: Integer -> Integer -> Integer
+    betaMul k n = beta (esMultiploDe k n)
 
 -- 4.f.
 {-
@@ -233,10 +238,11 @@ problema posPrimerPar(t:ZxZxZ):Z {
 }
 -}
 posPrimerPar :: (Integer, Integer, Integer) -> Integer
-posPrimerPar (t0, t1, t2) | esMultiploDe t0 2 = 0
-                          | esMultiploDe t1 2 = 1
-                          | esMultiploDe t2 2 = 2
-                          | otherwise = 4
+posPrimerPar (t0, t1, t2) 
+  | esMultiploDe t0 2 = 0
+  | esMultiploDe t1 2 = 1
+  | esMultiploDe t2 2 = 2
+  | otherwise = 4
 
 -- 4.g.
 {-
@@ -261,13 +267,16 @@ invertir (a, b) = (b, a)
 -- 5.
 todosMenores :: (Integer, Integer, Integer) -> Bool
 todosMenores (n1, n2, n3) = f(n1) > g(n1) && f(n2) > g(n2) && f(n3) > g(n3)
-    where f :: Integer -> Integer
-          f n | n <= 7 = n*n
-              | otherwise = 2*n - 1
-          g :: Integer -> Integer
-          g n | esPar n = div n 2
-              | otherwise = 3*n + 1
-                where esPar n = esMultiploDe n 2 
+  where 
+    f :: Integer -> Integer
+    f n 
+      | n <= 7 = n*n
+      | otherwise = 2*n - 1
+    g :: Integer -> Integer
+    g n 
+      | esPar n = div n 2
+      | otherwise = 3*n + 1
+      where esPar n = esMultiploDe n 2 
 
 -- 6.
 bisiesto :: Integer -> Bool
@@ -279,11 +288,13 @@ distanciaManhattan (a0, a1, a2) (b0, b1, b2) = abs (a0 - b0) + abs (a1 - b1) + a
 
 -- 8.
 comparar :: Integer -> Integer -> Integer
-comparar a b | sumaUltimosDosDigitos a < sumaUltimosDosDigitos b = 1
-             | sumaUltimosDosDigitos a > sumaUltimosDosDigitos b = -1
-             | otherwise = 0
-               where sumaUltimosDosDigitos :: Integer -> Integer
-                     sumaUltimosDosDigitos a = digitoUnidades a + digitoDecenas a
+comparar a b 
+  | sumaUltimosDosDigitos a < sumaUltimosDosDigitos b = 1
+  | sumaUltimosDosDigitos a > sumaUltimosDosDigitos b = -1
+  | otherwise = 0
+  where 
+    sumaUltimosDosDigitos :: Integer -> Integer
+    sumaUltimosDosDigitos a = digitoUnidades a + digitoDecenas a
 
 -- 9.a.
 {-
@@ -341,19 +352,19 @@ problema truncadosIguales(a:R, b:Z):B {
 
 main :: IO ()
 main = do
-    print ("1.", h 8, h 16, h 131, k 1, k 4, k 16)
-    print ("2.c.", maximo3 5 8 7)
-    print ("2.d.", algunoEs0 0.5 0.1)
-    print ("2.e.", ambosSon0 0 0)
-    print ("2.g.", sumaDistintos 5 4 5)
-    print ("2.h.", esMultiploDe 5 (-10))
-    print ("2.i.", digitoUnidades 56)
-    print ("2.j.", digitoDecenas 65)
-    print ("3.", estanRelacionados 6 2, estanRelacionados 7 3)
-    print ("4.c.", distanciaPuntos (1,1) (0,0))
-    print ("4.e.", sumarSoloMultiplos (10,-8,-5) 2, sumarSoloMultiplos (66,21,4) 5, sumarSoloMultiplos (-30,2,12) 3)
-    print ("4.g.", crearPar 5 True)
-    print ("4.h.", invertir (5, True))
-    print ("6.", bisiesto 1901, bisiesto 1900, bisiesto 1904, bisiesto 2000)
-    print ("7.", distanciaManhattan (2, 3, 4) (7, 3, 8), distanciaManhattan ((-1), 0, (-8.5)) (3.3, 4, (-4)))
-    print ("8.", comparar 45 312, comparar 2312 7, comparar 45 172)
+  print ("1.", h 8, h 16, h 131, k 1, k 4, k 16)
+  print ("2.c.", maximo3 5 8 7)
+  print ("2.d.", algunoEs0 0.5 0.1)
+  print ("2.e.", ambosSon0 0 0)
+  print ("2.g.", sumaDistintos 5 4 5)
+  print ("2.h.", esMultiploDe 5 (-10))
+  print ("2.i.", digitoUnidades 56)
+  print ("2.j.", digitoDecenas 65)
+  print ("3.", estanRelacionados 6 2, estanRelacionados 7 3)
+  print ("4.c.", distanciaPuntos (1,1) (0,0))
+  print ("4.e.", sumarSoloMultiplos (10,-8,-5) 2, sumarSoloMultiplos (66,21,4) 5, sumarSoloMultiplos (-30,2,12) 3)
+  print ("4.g.", crearPar 5 True)
+  print ("4.h.", invertir (5, True))
+  print ("6.", bisiesto 1901, bisiesto 1900, bisiesto 1904, bisiesto 2000)
+  print ("7.", distanciaManhattan (2, 3, 4) (7, 3, 8), distanciaManhattan ((-1), 0, (-8.5)) (3.3, 4, (-4)))
+  print ("8.", comparar 45 312, comparar 2312 7, comparar 45 172)
