@@ -129,8 +129,7 @@ f n m = sumaInterna n m + f (n-1) m
 
 -- 14.
 sumaPotencias :: Integer -> Integer -> Integer -> Integer
-sumaPotencias q 1 1 = q^2
-sumaPotencias q 1 m = q^(1+m) + sumaPotencias q 1 (m-1)
+sumaPotencias _ 0 _ = 0
 sumaPotencias q n m = sumaInterna q n m + sumaPotencias q (n-1) m
   where 
     sumaInterna :: Integer -> Integer -> Integer -> Integer
@@ -139,8 +138,7 @@ sumaPotencias q n m = sumaInterna q n m + sumaPotencias q (n-1) m
 
 -- 15.
 sumaRacionales :: Integer -> Integer -> Float
-sumaRacionales 1 1 = 1.0
-sumaRacionales 1 m = 1.0/(fromIntegral m) + sumaRacionales 1 (m-1)
+sumaRacionales 0 _ = 0
 sumaRacionales n m = sumaInterna n m + sumaRacionales (n-1) m
   where 
     sumaInterna :: Integer -> Integer -> Float
