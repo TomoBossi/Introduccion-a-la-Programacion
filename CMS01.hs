@@ -50,7 +50,6 @@ combinacionesMenoresOiguales n = iteradorContador n n n
     iteradorContador n i j = iteracionInterna n i j + iteradorContador n (i-1) j
       where
         iteracionInterna :: Integer -> Integer -> Integer -> Integer
-        iteracionInterna _ 1 1 = 1
         iteracionInterna n i 1 = beta (i <= n)
         iteracionInterna n i j = beta (i*j <= n) + iteracionInterna n i (j-1)
 
