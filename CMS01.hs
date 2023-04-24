@@ -1,4 +1,4 @@
--- 1
+-- 1.
 sumaMenosQueMax :: (Int, Int, Int) -> Bool
 sumaMenosQueMax (t0, t1, t2) = maximo > minimo + intermedio
   where 
@@ -23,7 +23,7 @@ medio_terna (t0, t1, t2) | t0 <= t1 && t0 >= t2 = t0
                          | t1 >= t0 && t1 <= t2 = t1
                          | otherwise = t2
 
--- 2
+-- 2.
 sumaDigitos :: Int -> Int
 sumaDigitos 0 = 0
 sumaDigitos n = digitoUnidad + sumaDigitos digitosRestantes
@@ -31,17 +31,17 @@ sumaDigitos n = digitoUnidad + sumaDigitos digitosRestantes
     digitoUnidad = mod n 10
     digitosRestantes = div n 10
 
--- 3
+-- 3.
 prod :: Integer -> Integer
 prod 0 = 1
 prod n = ((2*n)^2 + 2*(2*n)) * ((2*n-1)^2 + 2*(2*n-1)) * prod (n-1)
 
--- 4
+-- 4.
 sumaPrimerosNImpares :: Integer -> Integer
 sumaPrimerosNImpares 0 = 0
 sumaPrimerosNImpares n = 2*(2*n-1)+2 + sumaPrimerosNImpares (n-1)
 
--- 5
+-- 5.
 combinacionesMenoresOiguales :: Integer -> Integer
 combinacionesMenoresOiguales n = iteradorContador n n n
   where
