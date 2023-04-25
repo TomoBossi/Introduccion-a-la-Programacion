@@ -328,7 +328,7 @@ main = do
   print ("4.1.", sacarBlancosRepetidos ['H', 'o'])
   print ("4.2.", contarPalabras [' ', ' ', ' ', ' ', 'H', 'o', ' ', ' ', 'T', 'o', 'm', ' ', 'L', 'a', ' ', ' ', 'C', 'o', 'l', 'a'])
   print ("4.3.", palabraMasLarga [' ', ' ', ' ', ' ', 'H', 'o', ' ', ' ', 'T', 'o', 'm', ' ', 'L', 'a', ' ', ' ', 'C', 'o', 'l', 'a'])
-  print ("4.4.", longitud (head (palabras [' ', ' ', ' ', ' ', ' ', 'H', 'o', ' ', 'T', 'o', 'm', ' ', 'L', 'a', ' ', ' ', 'C', 'o', 'l', 'a'])))
+  print ("4.4.", palabras [' ', ' ', ' ', ' ', ' ', 'H', 'o', ' ', 'T', 'o', 'm', ' ', 'L', 'a', ' ', ' ', 'C', 'o', 'l', 'a'])
   print ("4.5.", aplanar [['H', 'o'], ['l', 'a']])
   print ("4.6.", aplanarConBlancos [['H', 'o'], ['l', 'a']])
   print ("4.7.", aplanarConNBlancos [['H', 'o'], ['l', 'a']] 5)
