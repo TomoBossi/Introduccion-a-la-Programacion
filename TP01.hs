@@ -310,5 +310,5 @@ main = do
   print (cc "Test 10.02. " (assert (True == existeSecuenciaDeAmigos red3 u1 u4)))
   -- Auxiliares
   -- perteneceDupla
-  print (cc "Test aux.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
-  print (cc "Test aux.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
+  print (cc "Test 00.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
+  print (cc "Test 00.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
