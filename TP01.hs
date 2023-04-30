@@ -276,9 +276,6 @@ main :: IO()
 main = do
   -- nombresDeUsuarios
   print (cc "Test 01.01. " (assert ([snd u1, snd u2, snd u3, snd u4] == nombresDeUsuarios red1)))
-  -- perteneceDupla
-  print (cc "Test 02.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
-  print (cc "Test 02.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
   -- amigosDe
   print (cc "Test 02.03. " (assert ([u2, u3] == amigosDe red1 u1)))
   print (cc "Test 02.04. " (assert ([] == amigosDe red1 u4)))
@@ -311,3 +308,7 @@ main = do
   -- existeSecuenciaDeAmigos
   print (cc "Test 10.01. " (assert (False == existeSecuenciaDeAmigos red2 u1 u4)))
   print (cc "Test 10.02. " (assert (True == existeSecuenciaDeAmigos red3 u1 u4)))
+  -- Auxiliares
+  -- perteneceDupla
+  print (cc "Test aux.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
+  print (cc "Test aux.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
