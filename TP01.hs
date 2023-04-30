@@ -166,13 +166,13 @@ interseccion (x:xs) y
 -- Toma una red social y dos usuarios u1, u2 y devuelve True si los usuarios están relacionados directa o indirectamente.
 -- Dos usuarios se relacionan directamente si participan de una relación de la red social ((u1, u2) o (u2, u1)), o indirectamente si existe alguna serie de relaciones que los vinculan.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos red u1 u2 = existeSecuenciaRelaciones red (amigosDe red u1) u2
+existeSecuenciaDeAmigos red u1 u2 = existeCadena red (amigosDe red u1) u2
   where
-    existeSecuenciaRelaciones :: RedSocial -> [Usuario] -> Usuario -> Bool
-    existeSecuenciaRelaciones _ [] _ = False
-    existeSecuenciaRelaciones red (u0:us) u
+    existeCadena :: RedSocial -> [Usuario] -> Usuario -> Bool
+    existeCadena _ [] _ = False
+    existeCadena red (u0:us) u
       | pertenece u (u0:us) = True
-      | otherwise = existeSecuenciaRelaciones (rmUsuario red u0) (amigosDe red u0) u || existeSecuenciaRelaciones red us u
+      | otherwise = existeCadena (rmUsuario red u0) (amigosDe red u0) u || existeCadena red us u
 
 -- Toma una red social y un usuario y remueve al usuario de la red.
 -- Remover al usuario implica remover al usuario en sí mismo pero también a todas sus relaciones, publicaciones, y likes a publicaciones ajenas.
