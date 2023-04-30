@@ -38,31 +38,27 @@ likesDePublicacion (_, _, us) = us
 -- Toma una red social y devuelve una lista con los nombres de todos los usuarios.
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios red = listaNombres (usuarios red)
-
--- Toma una lista de usuarios y devuelve una lista con los nombres de todos los usuarios.
-listaNombres :: [Usuario] -> [String]
-listaNombres [] = []
-listaNombres (u:us) = nombre:(listaNombres us)
-  where nombre = nombreDeUsuario u
+  where
+    listaNombres :: [Usuario] -> [String]
+    listaNombres [] = []
+    listaNombres (u:us) = nombre:(listaNombres us)
+      where nombre = nombreDeUsuario u
 
 -- 2.
 -- Toma una red social y un usuario y devuelve una lista con los usuarios (id, nombre) de todos sus amigos, sin repetir.
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe red u = listaAmigos (relaciones red) u
-
--- Toma una lista de relaciones y un usuario y devuelve una lista con los usuarios (id, nombre) de todos sus amigos, sin repetir.
-listaAmigos :: [Relacion] -> Usuario -> [Usuario]
-listaAmigos [] _ = []
-listaAmigos (r:rs) u
-  | perteneceDupla u r = (amigo r u):(listaAmigos rs u)
-  | otherwise = listaAmigos rs u
-
--- Toma una relación y un usuario y devuelve al otro usuario participante en la relación.
--- Requiere que el usuario input pertenezca a la relación.
-amigo :: Relacion -> Usuario -> Usuario
-amigo r u
-  | fst r == u = snd r
-  | otherwise = fst r
+  where
+    listaAmigos :: [Relacion] -> Usuario -> [Usuario]
+    listaAmigos [] _ = []
+    listaAmigos (r:rs) u
+      | perteneceDupla u r = (amigo r u):(listaAmigos rs u)
+      | otherwise = listaAmigos rs u
+      where
+        amigo :: Relacion -> Usuario -> Usuario
+        amigo r u
+          | fst r == u = snd r
+          | otherwise = fst r
 
 -- Toma una 2-upla y un elemento, devuelve True si el elemento pertenece a la dupla o False en caso contrario.
 perteneceDupla :: Eq t => t -> (t, t) -> Bool
@@ -71,11 +67,7 @@ perteneceDupla e dupla = fst dupla == e || snd dupla == e
 -- 3.
 -- Toma una red social y un usuario y devuelve la cantidad de amigos que tiene, es decir, la longitud de su lista de amigos.
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos red u = cantidadDeRelaciones (relaciones red) u 
-
--- Toma una lista de relaciones y un usuario y devuelve la cantidad de amigos que tiene, es decir, la longitud de su lista de amigos.
-cantidadDeRelaciones :: [Relacion] -> Usuario -> Int
-cantidadDeRelaciones rs u = longitud (listaAmigos rs u)
+cantidadDeAmigos red u = longitud (amigosDe red u)
 
 -- Toma una lista y devuelve su cantidad de elementos
 longitud :: [t] -> Int
@@ -87,37 +79,12 @@ longitud (_:xt) = 1 + longitud xt
 usuarioConMasAmigos :: RedSocial -> Usuario
 usuarioConMasAmigos red = usuarioEnMasRelaciones (usuarios red) (relaciones red)
   where
-    -- Toma una lista de usuarios y una de relaciones y devuelve al usuario (o a alguno de los usuarios) con la máxima cantidad de amigos.
     usuarioEnMasRelaciones :: [Usuario] -> [Relacion] -> Usuario
     usuarioEnMasRelaciones (u:[]) _ = u
     usuarioEnMasRelaciones (u0:u1:us) rs
       | cantAmigos u0 >= cantAmigos u1 = usuarioEnMasRelaciones (u0:us) rs
       | otherwise = usuarioEnMasRelaciones (u1:us) rs
-        where cantAmigos = cantidadDeRelaciones rs
-
--- usuarioConMasAmigos :: RedSocial -> Usuario
--- usuarioConMasAmigos red = masRepetido (ordenarUsuariosPorId (colapsarDuplas (relaciones red)))
-
--- -- Toma una lista de duplas y devuelve una lista de los elementos de todas ellas, con repeticiones sin las hubiesen.
--- colapsarDuplas :: [(t, t)] -> [t]
--- colapsarDuplas [] = []
--- colapsarDuplas (x:xs) = (fst x):(snd x):(colapsarDuplas xs)
-
--- -- Toma una lista de usuarios y la ordena según id
--- ordenarUsuariosPorId :: [Usuario] -> [Usuario]
--- ordenarUsuariosPorId = undefined
-
--- -- Toma una lista ordenada y devuelve el elemento más repetido.
--- masRepetido :: (Eq t) => [t] -> t
--- masRepetido (x:[]) = x
--- masRepetido xs = masRepetido (quitarUnoDeCada xs)
-
--- -- Toma una lista ordenada y elimina una única repetición de cada valor
--- quitarUnoDeCada :: (Eq t) => [t] -> [t]
--- quitarUnoDeCada (x:[]) = []
--- quitarUnoDeCada (x0:x1:xs)
---   | x0 /= x1 = x1:(quitarUnoDeCada xs)
---   | otherwise = x0:x1:(quitarUnoDeCada xs)
+        where cantAmigos = cantidadDeAmigos ([], rs, [])
 
 -- 5.
 -- Toma una red social y devuelve True si existe algún usuario con más de 1000000 amigos o False en caso contrario.
@@ -176,16 +143,17 @@ tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel red u
   | publicacionesDeUsuario == [] = False
   | otherwise = existeAlgunSeguidorFiel u (listaDeLikes publicacionesDeUsuario)
-    where
-      publicacionesDeUsuario = publicacionesDe red u
-      -- Toma una lista de publicaciones y devuelve la lista de listas de usuarios que les dieron like a cada una de ellas.
-      listaDeLikes :: [Publicacion] -> [[Usuario]]
-      listaDeLikes [] = []
-      listaDeLikes (p:ps) = (likesDePublicacion p):(listaDeLikes ps)
-      -- Toma un usuario autor de publicaciones (al menos una) y la lista de listas de usuarios que les dieron like a cada una de ellas, devuelve True si existe algún otro usuario (no el autor) que le dio like a todas ellas, False en caso contrario.
-      existeAlgunSeguidorFiel :: Usuario -> [[Usuario]]  -> Bool
-      existeAlgunSeguidorFiel u (l:[]) = l /= [] && l /= [u]
-      existeAlgunSeguidorFiel u (l0:l1:ls) = existeAlgunSeguidorFiel u ((interseccion l0 l1):ls)
+    where publicacionesDeUsuario = publicacionesDe red u
+
+-- Toma un usuario autor de publicaciones (al menos una) y la lista de listas de usuarios que les dieron like a cada una de ellas, devuelve True si existe algún otro usuario (no el autor) que le dio like a todas ellas, False en caso contrario.
+existeAlgunSeguidorFiel :: Usuario -> [[Usuario]]  -> Bool
+existeAlgunSeguidorFiel u (l:[]) = l /= [] && l /= [u]
+existeAlgunSeguidorFiel u (l0:l1:ls) = existeAlgunSeguidorFiel u ((interseccion l0 l1):ls)
+
+-- Toma una lista de publicaciones y devuelve la lista de listas de usuarios que les dieron like a cada una de ellas.
+listaDeLikes :: [Publicacion] -> [[Usuario]]
+listaDeLikes [] = []
+listaDeLikes (p:ps) = (likesDePublicacion p):(listaDeLikes ps)
 
 -- Toma dos listas y devuelve la intersección de sus sets.
 interseccion :: (Eq t) => [t] -> [t] -> [t]
@@ -196,8 +164,7 @@ interseccion (x:xs) y
 
 -- 10.
 -- Toma una red social y dos usuarios u1, u2 y devuelve True si los usuarios están relacionados directa o indirectamente.
--- Dos usuarios se relacionan directamente si participan de una relación de la red social ((u1, u2) o (u2, u1)),
--- o indirectamente si existe alguna serie de relaciones que los vinculan.
+-- Dos usuarios se relacionan directamente si participan de una relación de la red social ((u1, u2) o (u2, u1)), o indirectamente si existe alguna serie de relaciones que los vinculan.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos red u1 u2 = existeSecuenciaRelaciones red (amigosDe red u1) u2
   where
@@ -207,6 +174,8 @@ existeSecuenciaDeAmigos red u1 u2 = existeSecuenciaRelaciones red (amigosDe red 
       | pertenece u (u0:us) = True
       | otherwise = existeSecuenciaRelaciones (rmUsuario red u0) (amigosDe red u0) u || existeSecuenciaRelaciones red us u
 
+-- Toma una red social y un usuario y remueve al usuario de la red.
+-- Remover al usuario implica remover al usuario en sí mismo pero también a todas sus relaciones, publicaciones, y likes a publicaciones ajenas.
 rmUsuario :: RedSocial -> Usuario -> RedSocial
 rmUsuario (us, rs, ps) u = (rmUsuarioUs us u, rmUsuarioRs rs u, rmUsuarioPs ps u)
   where
@@ -307,15 +276,12 @@ main :: IO()
 main = do
   -- nombresDeUsuarios
   print (cc "Test 01.01. " (assert ([snd u1, snd u2, snd u3, snd u4] == nombresDeUsuarios red1)))
-  -- amigo
-  print (cc "Test 02.01. " (assert (u1 == (amigo (u1, u2) u2))))
-  print (cc "Test 02.02. " (assert (u2 == (amigo (u2, u1) u1))))
   -- perteneceDupla
-  print (cc "Test 02.03. " (assert (True == (perteneceDupla u1 (u2, u1)))))
-  print (cc "Test 02.04. " (assert (False == (perteneceDupla u3 (u2, u1)))))
+  print (cc "Test 02.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
+  print (cc "Test 02.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
   -- amigosDe
-  print (cc "Test 02.05. " (assert ([u2, u3] == amigosDe red1 u1)))
-  print (cc "Test 02.06. " (assert ([] == amigosDe red1 u4)))
+  print (cc "Test 02.03. " (assert ([u2, u3] == amigosDe red1 u1)))
+  print (cc "Test 02.04. " (assert ([] == amigosDe red1 u4)))
   -- longitud
   print (cc "Test 03.01. " (assert (0 == longitud [])))
   print (cc "Test 03.02. " (assert (3 == longitud [1,2,3])))
