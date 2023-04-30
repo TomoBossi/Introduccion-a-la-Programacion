@@ -277,8 +277,8 @@ main = do
   -- nombresDeUsuarios
   print (cc "Test 01.01. " (assert ([snd u1, snd u2, snd u3, snd u4] == nombresDeUsuarios red1)))
   -- amigosDe
-  print (cc "Test 02.03. " (assert ([u2, u3] == amigosDe red1 u1)))
-  print (cc "Test 02.04. " (assert ([] == amigosDe red1 u4)))
+  print (cc "Test 02.01. " (assert ([u2, u3] == amigosDe red1 u1)))
+  print (cc "Test 02.02. " (assert ([] == amigosDe red1 u4)))
   -- longitud
   print (cc "Test 03.01. " (assert (0 == longitud [])))
   print (cc "Test 03.02. " (assert (3 == longitud [1,2,3])))
