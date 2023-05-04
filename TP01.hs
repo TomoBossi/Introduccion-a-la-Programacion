@@ -1,4 +1,4 @@
--- Nombre de Grupo: xx
+-- Nombre de Grupo: GrupoTN1
 -- Integrante 1: Nombre Apellido, email, LU
 -- Integrante 2: Nombre Apellido, email, LU
 -- Integrante 3: Nombre Apellido, email, LU
@@ -52,17 +52,9 @@ amigosDe red u = listaAmigos (relaciones red) u
     listaAmigos :: [Relacion] -> Usuario -> [Usuario]
     listaAmigos [] _ = []
     listaAmigos (r:rs) u
-      | perteneceDupla u r = (amigo r u):(listaAmigos rs u)
+      | fst r == u = (snd r):(listaAmigos rs u)
+      | snd r == u = (fst r):(listaAmigos rs u)
       | otherwise = listaAmigos rs u
-      where
-        amigo :: Relacion -> Usuario -> Usuario
-        amigo r u
-          | fst r == u = snd r
-          | otherwise = fst r
-
--- Toma una 2-upla y un elemento, devuelve True si el elemento pertenece a la dupla o False en caso contrario.
-perteneceDupla :: Eq t => t -> (t, t) -> Bool
-perteneceDupla e dupla = fst dupla == e || snd dupla == e
 
 -- 3.
 -- Toma una red social y un usuario y devuelve la cantidad de amigos que tiene, es decir, la longitud de su lista de amigos.
@@ -107,13 +99,12 @@ listaPublicaciones (p:ps) u
 -- Toma una red social y un usuario y devuelve una lista con todas las publicaciones que le gustaron.
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
 publicacionesQueLeGustanA red u = listaPublicacionesQueLeGustanA (publicaciones red) u
-
--- Toma una lista de publicaciones y un usuario, devuelve  una lista con todas las publicaciones que le gustaron al usuario, sin repetir.
-listaPublicacionesQueLeGustanA :: [Publicacion] -> Usuario -> [Publicacion]
-listaPublicacionesQueLeGustanA [] _ = []
-listaPublicacionesQueLeGustanA (p:ps) u
-  | pertenece u (likesDePublicacion p) = p:(listaPublicacionesQueLeGustanA ps u)
-  | otherwise = listaPublicacionesQueLeGustanA ps u
+  where
+    listaPublicacionesQueLeGustanA :: [Publicacion] -> Usuario -> [Publicacion]
+    listaPublicacionesQueLeGustanA [] _ = []
+    listaPublicacionesQueLeGustanA (p:ps) u
+      | pertenece u (likesDePublicacion p) = p:(listaPublicacionesQueLeGustanA ps u)
+      | otherwise = listaPublicacionesQueLeGustanA ps u
 
 -- Toma una lista y un elemento, devuelve True si el elemento pertenece a la lista o False en caso contrario.
 pertenece :: (Eq t) => t -> [t] -> Bool
@@ -143,12 +134,12 @@ tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel red u
   | publicacionesDeUsuario == [] = False
   | otherwise = existeAlgunSeguidorFiel u (listaDeLikes publicacionesDeUsuario)
-    where publicacionesDeUsuario = publicacionesDe red u
-
--- Toma un usuario autor de publicaciones (al menos una) y la lista de listas de usuarios que les dieron like a cada una de ellas, devuelve True si existe algún otro usuario (no el autor) que le dio like a todas ellas, False en caso contrario.
-existeAlgunSeguidorFiel :: Usuario -> [[Usuario]]  -> Bool
-existeAlgunSeguidorFiel u (l:[]) = l /= [] && l /= [u]
-existeAlgunSeguidorFiel u (l0:l1:ls) = existeAlgunSeguidorFiel u ((interseccion l0 l1):ls)
+    where 
+      publicacionesDeUsuario = publicacionesDe red u
+      -- Toma un usuario autor de publicaciones (al menos una) y la lista de listas de usuarios que les dieron like a cada una de ellas, devuelve True si existe algún otro usuario (no el autor) que le dio like a todas ellas, False en caso contrario.
+      existeAlgunSeguidorFiel :: Usuario -> [[Usuario]]  -> Bool
+      existeAlgunSeguidorFiel u (l:[]) = l /= [] && l /= [u]
+      existeAlgunSeguidorFiel u (l0:l1:ls) = existeAlgunSeguidorFiel u ((interseccion l0 l1):ls)
 
 -- Toma una lista de publicaciones y devuelve la lista de listas de usuarios que les dieron like a cada una de ellas.
 listaDeLikes :: [Publicacion] -> [[Usuario]]
@@ -187,7 +178,7 @@ rmUsuario (us, rs, ps) u = (rmUsuarioUs us u, rmUsuarioRs rs u, rmUsuarioPs ps u
     rmUsuarioRs :: [Relacion] -> Usuario -> [Relacion]
     rmUsuarioRs [] _ = []
     rmUsuarioRs (r:rs) u
-      | perteneceDupla u r = rmUsuarioRs rs u
+      | fst r == u || snd r == u = rmUsuarioRs rs u
       | otherwise = r:(rmUsuarioRs rs u)
     rmUsuarioPs :: [Publicacion] -> Usuario -> [Publicacion]
     rmUsuarioPs [] _ = []
@@ -239,6 +230,40 @@ red1 = (us1, rs1, ps1)
 red2 :: RedSocial
 red2 = (us1, rs2, ps1)
 red3 = (us1, rs3, ps1)
+
+-- Para tests de la cátedra
+usuario1 = (1, "Juan")
+usuario2 = (2, "Natalia")
+usuario3 = (3, "Pedro")
+usuario4 = (4, "Mariela")
+usuario5 = (5, "Natalia")
+relacion1_2 = (usuario1, usuario2)
+relacion1_3 = (usuario1, usuario3)
+relacion1_4 = (usuario4, usuario1)
+relacion2_3 = (usuario3, usuario2)
+relacion2_4 = (usuario2, usuario4)
+relacion3_4 = (usuario4, usuario3)
+publicacion1_1 = (usuario1, "Este es mi primer post", [usuario2, usuario4])
+publicacion1_2 = (usuario1, "Este es mi segundo post", [usuario4])
+publicacion1_3 = (usuario1, "Este es mi tercer post", [usuario2, usuario5])
+publicacion1_4 = (usuario1, "Este es mi cuarto post", [])
+publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
+publicacion2_1 = (usuario2, "Hello World", [usuario4])
+publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
+publicacion3_1 = (usuario3, "Lorem Ipsum", [])
+publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
+publicacion3_3 = (usuario3, "consectetur adipiscing elit", [usuario2, usuario5])
+publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
+publicacion4_2 = (usuario4, "I am Bob", [])
+publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
+usuariosA = [usuario1, usuario2, usuario3, usuario4]
+relacionesA = [relacion1_2, relacion1_4, relacion2_3, relacion2_4, relacion3_4]
+publicacionesA = [publicacion1_1, publicacion1_2, publicacion2_1, publicacion2_2, publicacion3_1, publicacion3_2, publicacion4_1, publicacion4_2]
+redA = (usuariosA, relacionesA, publicacionesA)
+usuariosB = [usuario1, usuario2, usuario3, usuario5]
+relacionesB = [relacion1_2, relacion2_3]
+publicacionesB = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
+redB = (usuariosB, relacionesB, publicacionesB)
 
 -- Roberto Carlos
 uRC :: Usuario
@@ -308,7 +333,14 @@ main = do
   -- existeSecuenciaDeAmigos
   print (cc "Test 10.01. " (assert (False == existeSecuenciaDeAmigos red2 u1 u4)))
   print (cc "Test 10.02. " (assert (True == existeSecuenciaDeAmigos red3 u1 u4)))
-  -- Auxiliares
-  -- perteneceDupla
-  print (cc "Test 00.01. " (assert (True == (perteneceDupla u1 (u2, u1)))))
-  print (cc "Test 00.02. " (assert (False == (perteneceDupla u3 (u2, u1)))))
+  -- Cátedra
+  print (cc "Test CA.01. " (assert (["Juan","Natalia","Pedro","Mariela"] == (nombresDeUsuarios redA))))
+  print (cc "Test CA.02. " (assert ([usuario2, usuario4] == (amigosDe redA usuario1))))
+  print (cc "Test CA.03. " (assert (2 == (cantidadDeAmigos redA usuario1))))
+  print (cc "Test CA.04. " (assert ((usuarioConMasAmigos redA == usuario2) || (usuarioConMasAmigos redA == usuario4))))
+  print (cc "Test CA.05. " (assert (False == (estaRobertoCarlos redA))))
+  print (cc "Test CA.06. " (assert ([publicacion2_1, publicacion2_2] == (publicacionesDe redA usuario2))))
+  print (cc "Test CA.07. " (assert ([publicacion2_2, publicacion4_1] == (publicacionesQueLeGustanA redA usuario1))))
+  print (cc "Test CA.08. " (assert (True == (lesGustanLasMismasPublicaciones redB usuario1 usuario3))))
+  print (cc "Test CA.09. " (assert (True == (tieneUnSeguidorFiel redA usuario1))))
+  print (cc "Test CA.10. " (assert (True == (existeSecuenciaDeAmigos redA usuario1 usuario3))))
