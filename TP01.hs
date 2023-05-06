@@ -87,13 +87,12 @@ estaRobertoCarlos red = cantidadDeAmigos red (usuarioConMasAmigos red) > 1000000
 -- Toma una red social y un usuario y devuelve una lista con todas las publicaciones del usuario, sin repetir.
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe red u = listaPublicaciones (publicaciones red) u
-
--- Toma una lista de publicaciones y un usuario, devuelve una lista con todas las publicaciones del usuario, sin repetir.
-listaPublicaciones :: [Publicacion] -> Usuario -> [Publicacion]
-listaPublicaciones [] _ = []
-listaPublicaciones (p:ps) u
-  | usuarioDePublicacion p == u = p:(listaPublicaciones ps u)
-  | otherwise = listaPublicaciones ps u
+  where
+    listaPublicaciones :: [Publicacion] -> Usuario -> [Publicacion]
+    listaPublicaciones [] _ = []
+    listaPublicaciones (p:ps) u
+      | usuarioDePublicacion p == u = p:(listaPublicaciones ps u)
+      | otherwise = listaPublicaciones ps u
 
 -- 7.
 -- Toma una red social y un usuario y devuelve una lista con todas las publicaciones que le gustaron.
