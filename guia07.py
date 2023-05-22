@@ -59,7 +59,7 @@ def es_bisiesto(año: int) -> bool:
 
 # 4.1.
 def peso_pino(altura_cm: float) -> float:
-    peso_kg = 3*min(altura_cm, 300) + 2*max(altura_cm - 300, 0)
+    peso_kg: float = 3*min(altura_cm, 300) + 2*max(altura_cm - 300, 0)
     return peso_kg
 
 # 4.2.
@@ -107,7 +107,7 @@ def duplica_si_mult3_triplica_si_mult9(n: int):
 #   asegura: {|nombre| < 5 -> imprime "Tu nombre tiene menos de 5 caracteres"}
 # }
 def alerta_largo(nombre: str) -> None:
-    mensaje = (len(nombre)>=5)*"Tu nombre tiene muchas letras!"
+    mensaje: str = (len(nombre)>=5)*"Tu nombre tiene muchas letras!"
     mensaje += (len(nombre)<5)*"Tu nombre tiene menos de 5 caracteres"
     print(mensaje)
 
@@ -122,14 +122,14 @@ def alerta_largo(nombre: str) -> None:
 #   edad >= 18 ^ ((sexo = 'M' ^ edad < 65) v (sexo = 'F' ^ edad < 60))
 # }
 def alerta_status_laboral(sexo: str, edad: int) -> None:
-    trabaja = edad >= 18 and ((sexo == "M" and edad < 65) or (sexo == "F" and edad < 60))
-    mensaje = trabaja*"Te toca trabajar"
+    trabaja: bool = edad >= 18 and ((sexo == "M" and edad < 65) or (sexo == "F" and edad < 60))
+    mensaje: str = trabaja*"Te toca trabajar"
     mensaje += trabaja*"Andá de vacaciones"
     print(mensaje)
 
 # 6-7.1.
 def uno_a_diez_while() -> None:
-    i = 1
+    i: int = 1
     while i <= 10:
         print(i)
         i += 1
@@ -140,7 +140,7 @@ def uno_a_diez_for() -> None:
 
 # 6-7.2.
 def diez_a_cuarenta_pares_while() -> None:
-    i = 10
+    i: int = 10
     while i <= 40:
         print(i)
         i += 2
@@ -151,7 +151,7 @@ def diez_a_cuarenta_pares_for() -> None:
 
 # 6-7.3.
 def eco10_while() -> None:
-    i = 1
+    i: int = 1
     while i <= 10:
         print("eco")
         i += 1
