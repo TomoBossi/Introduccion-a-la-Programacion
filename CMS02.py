@@ -1,9 +1,9 @@
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 # 1.
 def quienGana(j1: str, j2: str) -> str:
   res: str
-  combGanadora: List[tuple] = [
+  combGanadora: List[Tuple[str, str]] = [
     ("Piedra", "Tijera"), 
     ("Tijera", "Papel"), 
     ("Papel", "Piedra"),
@@ -27,7 +27,7 @@ def quienGanaAnillo(j1: str, j2: str) -> str:
     res = "Jugador2"
   return res
 
-def indiceDe(e: str, l: List[str]):
+def indiceDe(e: Any, l: List[Any]):
   i: int = 0
   while l[i] != e and i <= len(l):
     i += 1
