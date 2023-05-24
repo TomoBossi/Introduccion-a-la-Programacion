@@ -2,7 +2,7 @@ from typing import List, Tuple, Any
 
 # 1.
 def quienGana(j1: str, j2: str) -> str:
-  res: str
+  res: str = "Empate"
   combGanadora: List[Tuple[str, str]] = [
     ("Piedra", "Tijera"), 
     ("Tijera", "Papel"), 
@@ -12,8 +12,6 @@ def quienGana(j1: str, j2: str) -> str:
     res = "Jugador1"
   elif pertenece(combGanadora, (j2, j1)):
     res = "Jugador2"
-  else:
-    res = "Empate"
   return res
 
 def quienGanaAnillo(j1: str, j2: str) -> str:
