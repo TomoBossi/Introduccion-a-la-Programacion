@@ -98,22 +98,13 @@ def filasParecidas(matriz: List[List[int]]) -> bool:
 def sePuedeLlegar(origen: str, destino: str, vuelos: List[Tuple[str, str]]) -> int:
   res: int = 0
   while origen != destino and res <= len(vuelos) + 1:
-    if esOrigen(origen, vuelos):
-      origen = destinoDeOrigen(origen, vuelos)
+    origen = destinoDeOrigen(origen, vuelos)
     res += 1
   if not res or res > len(vuelos):
     res = -1
   return res
 
-def esOrigen(origen: str, vuelos: List[Tuple[str, str]]) -> bool:
-  res: bool = False
-  for vuelo in vuelos:
-    if vuelo[0] == origen:
-      res = True
-  return res
-
 def destinoDeOrigen(origen: str, vuelos: List[Tuple[str, str]]) -> str:
-  """Requiere que el origen exista como origen en vuelos"""
   res: str = ""
   for vuelo in vuelos:
     if vuelo[0] == origen:
