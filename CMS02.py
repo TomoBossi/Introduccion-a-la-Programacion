@@ -16,9 +16,10 @@ def quienGana(j1: str, j2: str) -> str:
 
 def quienGanaAnillo(j1: str, j2: str) -> str:
   res: str = "Empate"
-  orden = ["Piedra", "Tijera", "Papel"]
-  ######### Piedra -> Tijera -> Papel -> Piedra -> ... donde ->: "mata"
-  id_j1, id_j2 = indiceDe(j1, orden), indiceDe(j2, orden)
+  orden: List[str] = ["Piedra", "Tijera", "Papel"]
+  #################### Piedra -> Tijera -> Papel -> Piedra -> ... donde ->: "mata"
+  id_j1: int = indiceDe(j1, orden)
+  id_j2: int = indiceDe(j2, orden)
   if id_j1 == (id_j2 - 1)%len(orden):
     res = "Jugador1"
   elif id_j2 == (id_j1 - 1)%len(orden):
@@ -58,16 +59,11 @@ def fibonacciNoRecursivo(n: int) -> int:
   return res
 
 # 3.
-# Observación: Creo que la especificación actual está mal. Asumo que devuelve largo de meseta máximo absoluto.
-# problema mesetaMasLarga (in l: seq⟨Z⟩) : Z {
-#   requiere: {True}
-#   asegura: {hayMesetaDeLong(l, result) ∧ ¬hayMesetaDeLong(l, result + 1)}
-# }
 def mesetaMasLarga(l: List[int]) -> int:
   maxAbs: int = 1
+  maxLocal: int = 1
   if l == []:
     maxAbs = 0
-  maxLocal: int = 1
   i: int = 1
   while i < len(l):
     if l[i] == l[i-1]:
@@ -80,7 +76,6 @@ def mesetaMasLarga(l: List[int]) -> int:
   return maxAbs
 
 # 4.
-# Observación: Error en la especificación, se especifica tipo de salida Z cuando claramente es Bool.
 def filasParecidas(matriz: List[List[int]]) -> bool:
   res: bool = True
   if not (matriz == [] or len(matriz) == 1 or matriz[0] == []):
