@@ -1,0 +1,324 @@
+1.a.
+problema esPrimo(n: Z): B {
+  requiere: {n >= 0}
+  asegura: {res = n > 1 ^L ¬(∃x: Z)(1 < x < n ^L n mod x = 0)}
+}
+
+1.b.
+problema esPosicionValida(i: Z, l: seq<T>): B {
+  requiere: {True}
+  asegura: {res = 0 <= i < |l|}
+}
+
+1.c.
+problema esMinimo(l: seq<Z>, elem: Z): B {
+  requiere: {|l| > 0}
+  asegura: {¬(∃i: Z)(0 <= i < |l| ^L l[i] < elem)}
+}
+
+1.d.
+problema esMaximo(l: seq<Z>, elem: Z): B {
+  requiere: {|l| > 0}
+  asegura: {¬(∃i: Z)(0 <= i < |l| ^L l[i] > elem)}
+}
+
+2.a.
+problema min(n1: Z, n2: Z): Z {
+  requiere: {True}
+  asegura: {(n1 < n2 => res = n1) ^ (n1 >= n2 => res = n2)}
+}
+
+2.b.
+problema max(n1: Z, n2: Z): Z {
+  requiere: {True}
+  asegura: {(n1 > n2 => res = n1) ^ (n1 <= n2 => res = n2)}
+}
+
+2.c.
+problema elMayorPrimo(n1: Z, n2: Z): Z {
+  requiere: {esPrimo(n1) ^ esPrimo(n2)}
+  asegura: {res = max(n1, n2)}
+}
+
+2.d.
+problema buscar(elem: Z, l: seq<Z>): Z {
+  requiere: {pertenece(elem, l)}
+  asegura: {esPosicionValida(res, l) ^L l[res] = elem}
+}
+
+predicado pertenece(elem: T, l: seq<T>) {
+  |l| > 0 ^L (∃i: Z)(0 <= i < |l| ^L l[i] = elem)
+}
+
+2.e.
+problema buscarMinimo(l: seq<Z>): Z {
+  requiere: {|l| > 0}
+  asegura: {esPosicionValida(res, l) ^L l[res] = minSeq(l)}
+}
+
+problema minSeq(l: seq<Z>): Z {
+  requiere: {|l| > 0}
+  asegura: {(∃i: Z)(0 <= i < |l| ^L l[i] = res)}
+  asegura: {(∀i: Z)(0 <= i < |l| =>L l[i] >= res)}
+}
+
+2.f.
+problema #apariciones(n: Z, l: seq<Z>): Z {
+  requiere: {True}
+  asegura: {res = E(i=0;|l|-1)(beta(l[i] = n))}
+}
+
+problema beta(b: B): Z {
+  requiere: {True}
+  asegura: {(b => (res = 1)) ^ (¬b => (res = 0))}
+}
+
+2.g.
+problema ordenadaCrecientemente(l: seq<Z>): B {
+  requiere: {True}
+  asegura: {¬(∃i: Z)(0 <= i < |l|-1 ^L l[i] > l[i+1])}
+}
+
+2.h.
+problema elMásRepetido(l: seq<Z>): Z {
+  requiere: {|l| > 0}
+  asegura: {(∀i: Z)(0 <= i < |l| =>L #apariciones(l[i], l) <= #apariciones(res, l))}
+}
+
+2.i.
+problema borrar(l: seq<Z>, elem: Z) {
+  requiere: {True}
+  asegura: {¬pertenece(elem, l) => (res = l)}
+  asegura: {pertenece(elem, l) => (|res| = |l|-1)}
+  asegura: {pertenece(elem, l) => ((∀i: Z)(0 <= i < buscar(elem, l) =>L l[i] = res[i]))}
+  asegura: {pertenece(elem, l) => ((∀i: Z)(buscar(elem, l) < i < |l| =>L l[i] = res[i-1]))}
+}
+
+3.a.
+asegura: {0 <= resultado < |l| ^L l[resultado] = elem}
+
+3.b.
+asegura: {(∀y: Z)(y ∈ l =>L y >= result)}
+asegura: {(∃y: Z)(y ∈ l ^L y = result)}
+
+3.c.
+asegura: {resultado = (∀i: Z)(1 ≤ i < |l| =>L l[i] = 2 * l[i−1])}
+
+4.
+No me gusta la especificación informal.
+
+5.a.
+l = [1,2,3], suma = 7
+
+5.b.
+Sigue siendo incorrecta. l = [4,6], suma = 5
+
+5.c.
+requiere: {(∃s: seq<Z>)(incluida(s, l) ^L E(i=0;|s|-1)(s[i]) = suma)}
+
+predicado incluida(s: seq<Z>, t: seq<Z>): B {
+  (∀x: Z)(x ∈ s =>L #apariciones(x, s) <= #apariciones(x, t))
+}
+
+6.a.I.
+resultado = 0
+
+6.a.II.
+resultado = 1
+resultado = -1
+
+6.a.III.
+resultado = sqrt(27)
+resultado = -sqrt(27)
+
+6.b.I.
+resultado = 3
+
+6.b.II.
+resultado = 0
+resultado = 3
+
+6.b.III.
+resultado = 0
+resultado = 1
+resultado = 2
+resultado = 3
+resultado = 4
+resultado = 5
+
+6.c.I.
+resultado = 3
+
+6.c.II.
+resultado = 0
+
+6.c.III.
+resultado = 0
+
+6.d.
+Los inputs con un único máximo absoluto.
+
+7.a.
+No es correcta. El asegura es una contradicción.
+
+7.b.
+No es correcta. No se define el valor de salida para el input (0, b).
+
+7.c.
+Es correcta.
+
+7.d.
+Es correcta.
+
+7.e.
+No es correcta. El asegura es una tautología independientemente de que el valor del resultado sea correcto o no.
+
+7.f.
+Es correcta.
+
+8.a.
+resultado = 9, cumple la postcondición.
+
+8.b.
+0.5 no cumple la postcondición, el resto de los valores sí.
+
+8.c.
+requiere: {x < 0 v x > 1}
+
+9.a.
+P3 > P1 > P2
+
+9.b.
+Q3 > Q1 > Q2
+
+9.c.
+- res = x^2 + 0.000000000000000000000001
+- res = sqrt(-x)^4
+
+9.d.a.
+Necesariamente cumple.
+
+9.d.b.
+NO necesariamente cumple.
+
+9.d.c.
+Necesariamente cumple.
+
+9.d.d.
+NO necesariamente cumple.
+
+9.d.e.
+Necesariamente cumple.
+
+9.d.f.
+NO necesariamente cumple.
+
+9.d.g.
+NO necesariamente cumple.
+
+9.d.h.
+NO necesariamente cumple.
+
+9.e.
+El requiere debe ser igual o más fuerte (restrictivo) que el de la especificación original.
+Esto implica que el conjunto de combinaciones de inputs permitidas por el nuevo requiere
+es un subconjunto del correspondiente al requiere original, por lo que todo algoritmo
+diseñado para el requiere original cumplirá también el nuevo requiere.
+
+El asegura debe ser igual o más débil (permisivo) que el de la original.
+Esto implica que el conjunto de resultados posibles de la especificación original 
+es un subconjunto del conjunto de resultados permitido por el nuevo asegura, por lo que todo 
+algoritmo diseñado para el asegura original cumplirá también el nuevo asegura.
+
+10.a.
+Llamando p a x != 0 y q a n <= 0,
+p q q=>p p=>(q=>p) (q=>p)=>p
+T T T    T         T
+T F T    T         T
+F T F    T         T
+F F T    T         F
+x != 0 => (n <= 0 => x != 0) es una tautología, es decir, el requiere de p1 es más fuerte
+que el de p2. Por lo tanto toda dupla (n, x) que cumpla el requiere de p1 cumplirá el 
+requiere de p2.
+
+10.b.
+El asegura de p2 es más fuerte que el de p1, por lo tanto todo res que hace verdadero al
+asegura de p2 lo hace verdadero también al asegura de p1.
+
+10.c.
+Como el requiere de p1 es más fuerte que el de p2 y su asegura más débil, a satisface p1.
+Ver ejercicio 9.e.
+
+11.
+Los requiere entre especificaciones no tienen relación de fuerza. 
+Por lo tanto la respuesta es no, en ambos casos.
+Para decir esto estoy asumiendo que n-esimo1 acepta elementos repetidos en l. 
+Es decir, asumo que "ordenados crecientemente" no implica estrictamente crecientemente, 
+que a su vez implicaría que todos los elementos sean distintos entre sí.
+
+En este caso basta con presentar algoritmos como contraejemplo para la prueba formal:
+
+Un algoritmo para n-esimo1 podría ser uno que simplemente devuelva l[n]. Como la lista input
+a n-esimo2 no tienen por qué estar ordenados, es esperable que este algoritmo no cumpla
+con el asegura de esta especificación, al menos no siempre.
+
+Un algoritmo para n-esimo2 podría generar y recorrer el set de los elementos de la lista l,
+luego podría realizar n ciclos de búsqueda y remoción del mínimo absoluto del set,
+finalmente podría devolver el mínimo del set restante. Como la lista input a n-esimo1
+puede tener elementos repetidos, el mínimo del set restante podría no coincidir con la
+posición n-esima de la lista original.
+
+12.a.
+problema descomposiciónEnPrimos(n: Z): seq<ZxZ> {
+  requiere: {n > 1}
+  asegura: {(∀i: Z)(0 ≤ i < |res| =>L esPrimo(res[i]_0))} # Factores primos
+  asegura: {(∀i: Z)(1 ≤ i < |res| =>L res[i]_0 > res[i-1]_0)} # Factores primos ordenados
+  asegura: {(∀i: Z)(0 ≤ i < |res| =>L res[i]_1 >= 0)} # Exponente >= 0
+  asegura: {n = π(i=0;|res|-1)(res[i]_0^res[i]_1)} # Descomposición en primos
+}
+
+12.b.
+problema rango(l: seq<R>): R {
+  requiere: {|l| >= 2}
+  asegura: {(∃i,j: Z)(0 <= i, j < |l| ^L res = l[i] - l[j])}
+  asegura: {(∀i,j: Z)(0 <= i, j < |l| =>L res >= l[i] - l[j])}
+}
+
+13.a.
+problema esSubcadena(s: seq<T>, t: seq<T>): B {
+  requiere: {True}
+  asegura: {res = (∃i: Z)(0 <= i <= |l|-|s| ^L ((∀j: Z)(0 <= j < |s| =>L s[j] = t[i+j])))}
+}
+
+13.b.
+problema incluida(s: seq<T>, t: seq<T>): B {
+  requiere: {True}
+  asegura: {res = (∀x: T)(x ∈ s =>L #apariciones(x, s) <= #apariciones(x, t))}
+}
+
+problema #apariciones(elem: T, l: seq<T>): Z {
+  requiere: {True}
+  asegura: {res = E(i=0;|l|-1)(beta(l[i] = elem))}
+}
+
+13.c.
+problema mezclarOrdenado(s: seq<Z>, t: seq<Z>): seq<Z> {
+  requiere: {True}
+  asegura: {|res| = |s| + |t|}
+  asegura: {(∀x: Z)((x ∈ s v x ∈ t) => #apariciones(x, res) = #apariciones(x, s) + #apariciones(x, t))}
+  asegura: {ordenadaCrecientemente(res)}
+}
+
+13.d.
+problema multiplicarPares(l: seq<R>, n: Z) {
+  requiere: {True}
+  asegura: {|res| = |l|}
+  asegura: {(∀i: Z)(0 <= i < |l| =>L ((l[i] = 0 => res[i] = l[i]*n) ^ (l[i] mod 2 = 1 => res[i] = l[i])))}
+}
+
+13.e.
+problema borrarMultiplos3(l: seq<Z>): seq<Z> {
+  requiere: {True}
+  asegura: {|res| = |l| - (E(x=1;+∞)(#apariciones(x*3, l) + #apariciones(-x*3, l)) + #apariciones(0, l))}
+  asegura: {(∀x: Z)(x ∈ l => ((x mod 3 = 0 => #apariciones(x, res) = 0) ^ (x mod 3 != 0 => #apariciones(x, res) = #apariciones(x, l))))}
+}
