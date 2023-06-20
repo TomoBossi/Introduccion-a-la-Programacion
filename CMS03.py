@@ -1,6 +1,5 @@
 from typing import List, Dict, Any, Union
 from queue import Queue, LifoQueue
-import json
 
 # 1.
 def calcular_expresion(expr: str) -> float:
