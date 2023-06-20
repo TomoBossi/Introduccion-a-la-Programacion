@@ -118,7 +118,7 @@ def avanzarFila(fila: Queue[int], min: int):
 
 def cantidadElementos(c: Queue[Any]) -> int:
     n: int = 0
-    temp: list = []
+    temp: List[Any] = []
     while not c.empty():
         temp.append(c.get())
         n += 1
