@@ -13,7 +13,7 @@ def calcular_expresion(expr: str) -> float:
         "/": lambda x, y: x / y, }
     while parsed_expr:
         char: str = parsed_expr.pop(0)
-        if char in operadores.keys():
+        if char in operadores:
             operando2: float = float(pila.get())
             operando1: float = float(pila.get())
             pila.put(operadores[char](operando1, operando2))
@@ -27,8 +27,8 @@ def calcular_expresion(expr: str) -> float:
 def unir_diccionarios(a_unir: List[Dict[str, str]]) -> Dict[str, List[str]]:
     res: Dict[str, List[str]] = {}
     for diccionario in a_unir:
-        for key in diccionario.keys():
-            if key in res.keys():
+        for key in diccionario:
+            if key in res:
                 res[key].append(diccionario[key])
             else:
                 res[key] = [diccionario[key]]
@@ -56,7 +56,7 @@ def procesar_pedido(pedido: Dict[str, Union[int, str, Dict[str, int]]],
     precio_total: float = 0
     cantidad: int = 0
 
-    for producto in productos.keys():
+    for producto in productos:
         if productos[producto] > stock_productos[producto]:
             estado = "incompleto"
         cantidad = min(productos[producto], stock_productos[producto])
