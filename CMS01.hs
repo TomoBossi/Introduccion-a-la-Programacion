@@ -7,21 +7,24 @@ sumaMenosQueMax (t0, t1, t2) = maximo > minimo + intermedio
     intermedio = medio_terna (t0, t1, t2)
 
 max_terna :: (Int, Int, Int) -> Int
-max_terna (t0, t1, t2) | t0 >= t1 && t0 >= t2 = t0
-                       | t1 >= t0 && t1 >= t2 = t1
-                       | otherwise = t2
+max_terna (t0, t1, t2) 
+  | t0 >= t1 && t0 >= t2 = t0
+  | t1 >= t0 && t1 >= t2 = t1
+  | otherwise = t2
 
 min_terna :: (Int, Int, Int) -> Int
-min_terna (t0, t1, t2) | t0 <= t1 && t0 <= t2 = t0
-                       | t1 <= t0 && t1 <= t2 = t1
-                       | otherwise = t2
+min_terna (t0, t1, t2) 
+  | t0 <= t1 && t0 <= t2 = t0
+  | t1 <= t0 && t1 <= t2 = t1
+  | otherwise = t2
 
 medio_terna :: (Int, Int, Int) -> Int
-medio_terna (t0, t1, t2) | t0 <= t1 && t0 >= t2 = t0
-                         | t0 >= t1 && t0 <= t2 = t0
-                         | t1 <= t0 && t1 >= t2 = t1
-                         | t1 >= t0 && t1 <= t2 = t1
-                         | otherwise = t2
+medio_terna (t0, t1, t2) 
+  | t0 <= t1 && t0 >= t2 = t0
+  | t0 >= t1 && t0 <= t2 = t0
+  | t1 <= t0 && t1 >= t2 = t1
+  | t1 >= t0 && t1 <= t2 = t1
+  | otherwise = t2
 
 -- 2.
 sumaDigitos :: Int -> Int
