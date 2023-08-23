@@ -267,13 +267,13 @@ def matrixProd(m1: list[list[float]], m2: list[list[float]]) -> list[list[float]
             res[i].append(suma)
     return res
 
-
 def randMatrixPowered(d: int, p: int) -> list[list[float]]:
     m: list[list[float]] = np.random.random((d, d))
     res: list[list[float]] = m
     for _ in range(p-1):
         res = matrixProd(res, m)
     return res
+
 
 if __name__ == "__main__":
     print(pertenece([1,2,3], 2), pertenece([1,2,3], 4))
